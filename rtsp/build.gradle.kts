@@ -18,7 +18,7 @@ android {
 
   defaultConfig {
     minSdk = 16
-    lint.targetSdk = 34
+    targetSdk = 34
     buildConfigField("int", "VERSION_CODE", "$vCode")
     buildConfigField("String", "VERSION_NAME", "\"${vName}\"")
   }
