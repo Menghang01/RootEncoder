@@ -46,6 +46,7 @@ import com.pedro.library.util.sources.video.VideoSource
 import com.pedro.library.util.streamclient.StreamBaseClient
 import com.pedro.library.view.GlStreamInterface
 import java.nio.ByteBuffer
+import javax.microedition.khronos.egl.EGLSurface
 
 /**
  * Created by pedro on 21/2/22.
@@ -220,6 +221,10 @@ abstract class StreamBase(
     startPreview(Surface(textureView.surfaceTexture), textureView.width, textureView.height)
   }
 
+  fun startPreview(textureView: TextureView,mEGLSurface: EGLSurface) {
+    startPreview(Surface(textureView.surfaceTexture), textureView.width, textureView.height, mEGLSurface)
+  }
+
   /**
    * Start preview in the selected SurfaceView.
    * Must be called after prepareVideo.
@@ -240,7 +245,7 @@ abstract class StreamBase(
    * Start preview in the selected Surface.
    * Must be called after prepareVideo.
    */
-  fun startPreview(surface: Surface, width: Int, height: Int) {
+  fun startPreview(surface: Surface, width: Int, height: Int, mEGLSurface: EGLSurface ) {
     if (!surface.isValid) throw IllegalArgumentException("Make sure the Surface is valid")
     if (isOnPreview) throw IllegalStateException("Preview already started, stopPreview before startPreview again")
     isOnPreview = true
@@ -248,7 +253,7 @@ abstract class StreamBase(
     if (!videoSource.isRunning()) {
       videoSource.start(glInterface.surfaceTexture)
     }
-    glInterface.attachPreview(surface)
+    glInterface.attachPreview(surface, mEGLSurface)
     glInterface.setPreviewResolution(width, height)
   }
 

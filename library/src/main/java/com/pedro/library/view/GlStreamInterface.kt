@@ -35,6 +35,7 @@ import com.pedro.library.util.Filter
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.Semaphore
+import javax.microedition.khronos.egl.EGLSurface
 
 /**
  * Created by pedro on 14/3/22.
@@ -229,12 +230,12 @@ class GlStreamInterface(private val context: Context) : Runnable, OnFrameAvailab
     }
   }
 
-  fun attachPreview(surface: Surface) {
+  fun attachPreview(surface: Surface, mEGLSurface: EGLSurface) {
     synchronized(sync) {
       if (surfaceManager.isReady) {
         isPortrait = CameraHelper.isPortrait(context)
         surfaceManagerPreview.release()
-        surfaceManagerPreview.eglSetup(surface, surfaceManager)
+        surfaceManagerPreview.eglSetup(surface, surfaceManager, mEGLSurface)
       }
     }
   }

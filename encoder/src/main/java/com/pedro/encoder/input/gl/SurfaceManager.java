@@ -73,7 +73,7 @@ public class SurfaceManager {
   /**
    * Prepares EGL.  We want a GLES 2.0 context and a surface that supports recording.
    */
-  public void eglSetup(int width, int height, Surface surface, EGLContext eglSharedContext) {
+  public void eglSetup(int width, int height, Surface surface, EGLContext eglSharedContext, EGLSurface mEglSurface) {
     if (isReady) {
       Log.e(TAG, "already ready, ignored");
       return;
@@ -152,7 +152,7 @@ public class SurfaceManager {
 //      int[] surfaceAttribs = {
 //          EGL14.EGL_NONE
 //      };
-//      eglSurface = EGL14.eglCreateWindowSurface(eglDisplay, configs[0], surface, surfaceAttribs, 0);
+      eglSurface = mEglSurface;
       Log.d("new fork", "here");
     }
     GlUtil.checkEglError("eglCreateWindowSurface");
@@ -166,6 +166,9 @@ public class SurfaceManager {
 
   public void eglSetup(int width, int height, SurfaceManager manager) {
     eglSetup(width, height, null, manager.eglContext);
+  }
+  public void eglSetup(int width, int height, SurfaceManager manager, EGLSurface mEglSurface) {
+    eglSetup(width, height, null, manager.eglContext, mEglSurface);
   }
 
   public void eglSetup(Surface surface, EGLContext eglContext) {
